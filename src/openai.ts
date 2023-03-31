@@ -4,4 +4,4 @@ const configuration = new Configuration({
   organization: process.env.OPENAI_ORGANIZATION
 });
 
-export default new OpenAIApi(configuration);
+export const openai = new OpenAIApi(configuration);
