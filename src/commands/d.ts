@@ -1,19 +1,16 @@
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-} from "discord.js";
+import { SlashCommandBuilder } from "discord.js";
 import { CreateCompletionResponse } from "openai";
 import { useOpenai } from "../utils/useOpenai";
+import { Command } from "./index";
 
-const d = {
+const d: Command = {
   data: new SlashCommandBuilder()
     .setName("d")
     .setDescription("Fale com a bat")
     .addStringOption((option) =>
       option.setName("mensagem").setDescription("Fala ae").setRequired(true)
     ),
-  async execute(interaction: ChatInputCommandInteraction<CacheType>) {
+  async execute(interaction) {
     const question = interaction.options.getString("mensagem");
 
     await interaction.reply(`Q: ${question}`);

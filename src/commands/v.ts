@@ -1,21 +1,18 @@
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-} from "discord.js";
+import { SlashCommandBuilder } from "discord.js";
 import { useMessagesBuilder } from "../utils/useMessages";
 import { useOpenai } from "../utils/useOpenai";
+import { Command } from "./index";
 
 const useMessages = useMessagesBuilder();
 
-const v = {
+const v: Command = {
   data: new SlashCommandBuilder()
     .setName("v")
     .setDescription("Fale com a bat (tts)")
     .addStringOption((option) =>
       option.setName("mensagem").setDescription("Fala ae").setRequired(true)
     ),
-  async execute(interaction: ChatInputCommandInteraction<CacheType>) {
+  async execute(interaction) {
     const question = interaction.options.getString("mensagem");
 
     const [getMessages, addMessage] = useMessages(interaction.user.id);

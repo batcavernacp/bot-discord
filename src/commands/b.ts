@@ -1,23 +1,18 @@
-import * as dotenv from "dotenv";
-dotenv.config();
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-} from "discord.js";
+import { SlashCommandBuilder } from "discord.js";
 import { useOpenai } from "../utils/useOpenai";
 import { useMessagesBuilder } from "../utils/useMessages";
+import { Command } from "./index";
 
 const useMessages = useMessagesBuilder();
 
-const b = {
+const b: Command = {
   data: new SlashCommandBuilder()
     .setName("b")
     .setDescription("Fale com a bat")
     .addStringOption((option) =>
       option.setName("mensagem").setDescription("Fala ae").setRequired(true)
     ),
-  async execute(interaction: ChatInputCommandInteraction<CacheType>) {
+  async execute(interaction) {
     const question = interaction.options.getString("mensagem");
 
     const [getMessages, addMessage] = useMessages(interaction.user.id);
