@@ -1,8 +1,9 @@
 import { Collection } from "discord.js";
 import { b } from "./b";
+import { d } from "./d";
 import { v } from "./v";
 
-const list = [b, v];
+const list = [b, v, d];
 
 const commands = new Collection<any, typeof b>();
 
