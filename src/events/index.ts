@@ -5,7 +5,7 @@ export default function handleEvents(client: Client<boolean>) {
   client.on(Events.InteractionCreate, async (interaction: Interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    const command = commands.get(interaction.commandName) as any;
+    const command = commands.get(interaction.commandName);
 
     if (!command) {
       console.error(
