@@ -4,8 +4,11 @@ dotenv.config();
 import express from "express";
 
 import { Client, GatewayIntentBits, REST, Routes } from "discord.js";
-import { comandos } from "./commands";
+import buildCommands, { getCollection, getCommandData } from "./commands";
 import handleEvents from "./events";
+import { openai } from "./openai";
+
+const list = buildCommands({ openai });
 
 const app = express();
 app.get("/", (req, res) => {
@@ -26,6 +29,8 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const rest = new REST({ version: "10" }).setToken(token);
 
+const comandos = getCommandData(list);
+
 rest
   .put(Routes.applicationCommands(clientId), {
     body: comandos,
@@ -34,6 +39,6 @@ rest
     console.log(`Refreshed ${comandos.length} application (/) commands.`)
   );
 
-handleEvents(client);
+handleEvents(client, getCollection(list));
 
 client.login(token);

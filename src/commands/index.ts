@@ -6,21 +6,6 @@ import {
 } from "discord.js";
 import fs from "fs";
 import { OpenAIApi } from "openai";
-import { openai } from "../openai";
-
-const list: Command[] = fs
-  .readdirSync(__dirname)
-  .filter((file) => !file.startsWith("index"))
-  .map((file) => file.split(".")[0])
-  .map((file) => require("./" + file).default(new SlashCommandBuilder(), { openai })); // TODO: injetar aqui
-
-const commands = new Collection<any, Command>();
-
-list.forEach((c) => commands.set(c.data.name, c));
-
-export default commands;
-
-export const comandos = list.map((c) => c.data.toJSON());
 
 export type Command = {
   data: Partial<SlashCommandBuilder>;
@@ -32,4 +17,28 @@ type CommandDependencies = {
   openai: OpenAIApi;
 };
 
-export type CommandBuilder = (builder: SlashCommandBuilder, depedencies: CommandDependencies) => Command;
+export type CommandBuilder = (
+  builder: SlashCommandBuilder,
+  depedencies: CommandDependencies
+) => Command;
+
+export default function buildCommands(
+  depedencies: CommandDependencies
+): Command[] {
+  return fs
+    .readdirSync(__dirname)
+    .filter((file) => !file.startsWith("index"))
+    .map((file) => file.split(".")[0])
+    .map((file) =>
+      require("./" + file).default(new SlashCommandBuilder(), depedencies)
+    );
+}
+
+export const getCollection = (list: Command[]) => {
+  const collection = new Collection<any, Command>();
+  list.forEach((c) => collection.set(c.data.name, c));
+  return collection;
+};
+
+export const getCommandData = (list: Command[]) =>
+  list.map((c) => c.data.toJSON());

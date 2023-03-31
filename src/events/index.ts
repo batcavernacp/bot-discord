@@ -1,7 +1,10 @@
-import commands from "../commands";
-import { Client, Events, Interaction } from "discord.js";
+import { Command } from "../commands";
+import { Client, Collection, Events, Interaction } from "discord.js";
 
-export default function handleEvents(client: Client<boolean>) {
+export default function handleEvents(
+  client: Client<boolean>,
+  commands: Collection<any, Command>
+) {
   client.on(Events.InteractionCreate, async (interaction: Interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
