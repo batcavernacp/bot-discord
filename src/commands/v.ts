@@ -18,7 +18,7 @@ export const v = {
   async execute(interaction: ChatInputCommandInteraction<CacheType>) {
     const question = interaction.options.getString("mensagem");
 
-    const [addMessage, getMessages] = useMessages(interaction.user.id);
+    const [getMessages, addMessage] = useMessages(interaction.user.id);
 
     addMessage({
       name: interaction.user.id,

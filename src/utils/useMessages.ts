@@ -16,6 +16,6 @@ export const useMessagesBuilder = () => {
 
     const getMessages = () => messages[id];
 
-    return [addMessage, getMessages] as const;
+    return [getMessages, addMessage] as const;
   };
 };
