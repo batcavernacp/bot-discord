@@ -8,7 +8,7 @@ export const parseStream = async <T>(data: T, parse: (datas: T) => string) => {
   for await (const response of streamCompletion(data as any)) {
     try {
       const parsed = JSON.parse(response);
-      resposta += parse(parsed);
+      resposta += parse(parsed) ?? "";
     } catch (error) {
       //
     }
