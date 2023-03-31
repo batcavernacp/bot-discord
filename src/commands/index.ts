@@ -1,11 +1,18 @@
-import { CacheType, ChatInputCommandInteraction, Collection, SlashCommandBuilder } from "discord.js";
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  Collection,
+  SlashCommandBuilder,
+} from "discord.js";
 import fs from "fs";
+import { OpenAIApi } from "openai";
+import { openai } from "../openai";
 
 const list: Command[] = fs
   .readdirSync(__dirname)
   .filter((file) => !file.startsWith("index"))
   .map((file) => file.split(".")[0])
-  .map((file) => require("./" + file).default);
+  .map((file) => require("./" + file).default(new SlashCommandBuilder(), { openai })); // TODO: injetar aqui
 
 const commands = new Collection<any, Command>();
 
@@ -16,6 +23,13 @@ export default commands;
 export const comandos = list.map((c) => c.data.toJSON());
 
 export type Command = {
-  data: Partial<SlashCommandBuilder>,
-  execute: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<void>
-}
+  data: Partial<SlashCommandBuilder>;
+  execute: (
+    interaction: ChatInputCommandInteraction<CacheType>
+  ) => Promise<void>;
+};
+type CommandDependencies = {
+  openai: OpenAIApi;
+};
+
+export type CommandBuilder = (builder: SlashCommandBuilder, depedencies: CommandDependencies) => Command;

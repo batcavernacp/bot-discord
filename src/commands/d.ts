@@ -1,10 +1,8 @@
-import { SlashCommandBuilder } from "discord.js";
-import { CreateCompletionResponse } from "openai";
-import { useOpenai } from "../utils/useOpenai";
-import { Command } from "./index";
+import { parseStream } from "../utils/parseStream";
+import { CommandBuilder } from "./index";
 
-const d: Command = {
-  data: new SlashCommandBuilder()
+const d: CommandBuilder = (builder, { openai }) => ({
+  data: builder
     .setName("d")
     .setDescription("Fale com a bat")
     .addStringOption((option) =>
@@ -17,23 +15,21 @@ const d: Command = {
 
     await interaction.channel?.sendTyping();
 
-    const answer = await useOpenai({
-      fn: (openai) =>
-        openai.createCompletion(
-          {
-            model: "text-davinci-003",
-            prompt: question,
-            stream: true,
-          },
-          { responseType: "stream" }
-        ),
-      parse: (r: CreateCompletionResponse) => r.choices[0].text ?? "",
-    });
+    const { data } = await openai.createCompletion(
+      {
+        model: "text-davinci-003",
+        prompt: question,
+        stream: true,
+      },
+      { responseType: "stream" }
+    );
+
+    const answer = await parseStream(data, (d) => d.choices[0].text);
 
     await interaction.editReply(`Q: ${question}:
 
 A: ${answer}`);
   },
-};
+});
 
 export default d;

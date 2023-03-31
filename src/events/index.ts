@@ -1,5 +1,5 @@
 import commands from "../commands";
-import { Client, Events, Interaction, InteractionType } from "discord.js";
+import { Client, Events, Interaction } from "discord.js";
 
 export default function handleEvents(client: Client<boolean>) {
   client.on(Events.InteractionCreate, async (interaction: Interaction) => {

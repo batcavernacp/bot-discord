@@ -1,12 +1,11 @@
-import { SlashCommandBuilder } from "discord.js";
+import { parseStream } from "../utils/parseStream";
 import { useMessagesBuilder } from "../utils/useMessages";
-import { useOpenai } from "../utils/useOpenai";
-import { Command } from "./index";
+import { CommandBuilder } from "./index";
 
 const useMessages = useMessagesBuilder();
 
-const v: Command = {
-  data: new SlashCommandBuilder()
+const v: CommandBuilder = (builder, { openai }) => ({
+  data: builder
     .setName("v")
     .setDescription("Fale com a bat (tts)")
     .addStringOption((option) =>
@@ -26,18 +25,20 @@ const v: Command = {
     await interaction.reply(`Q: ${question}
     `);
     await interaction.channel?.sendTyping();
-    const answer = await useOpenai({
-      fn: (openai) =>
-        openai.createChatCompletion(
-          {
-            model: "gpt-3.5-turbo",
-            messages: getMessages(),
-            stream: true,
-          },
-          { responseType: "stream" }
-        ),
-      parse: (r: any) => r.choices[0].delta.content ?? "",
-    });
+
+    const { data } = await openai.createChatCompletion(
+      {
+        model: "gpt-3.5-turbo",
+        messages: getMessages(),
+        stream: true,
+      },
+      { responseType: "stream" }
+    );
+
+    const answer = await parseStream(
+      data,
+      (d: any) => d.choices[0].delta.content ?? ""
+    );
 
     await interaction.channel.send({
       content: `A: ${answer}`,
@@ -50,6 +51,6 @@ const v: Command = {
       content: answer,
     });
   },
-};
+});
 
 export default v;
