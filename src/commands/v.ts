@@ -8,7 +8,7 @@ import { useOpenai } from "../utils/useOpenai";
 
 const useMessages = useMessagesBuilder();
 
-export const v = {
+const v = {
   data: new SlashCommandBuilder()
     .setName("v")
     .setDescription("Fale com a bat (tts)")
@@ -54,3 +54,5 @@ export const v = {
     });
   },
 };
+
+export default v;

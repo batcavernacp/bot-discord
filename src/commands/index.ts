@@ -1,11 +1,13 @@
 import { Collection } from "discord.js";
-import { b } from "./b";
-import { d } from "./d";
-import { v } from "./v";
+import fs from "fs";
 
-const list = [b, v, d];
+const list = fs
+  .readdirSync(__dirname)
+  .filter((file) => !file.startsWith("index"))
+  .map((file) => file.split(".")[0])
+  .map((file) => require("./" + file).default);
 
-const commands = new Collection<any, typeof b>();
+const commands = new Collection();
 
 list.forEach((c) => commands.set(c.data.name, c));
 

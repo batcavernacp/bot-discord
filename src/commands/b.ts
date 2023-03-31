@@ -10,7 +10,7 @@ import { useMessagesBuilder } from "../utils/useMessages";
 
 const useMessages = useMessagesBuilder();
 
-export const b = {
+const b = {
   data: new SlashCommandBuilder()
     .setName("b")
     .setDescription("Fale com a bat")
@@ -18,7 +18,6 @@ export const b = {
       option.setName("mensagem").setDescription("Fala ae").setRequired(true)
     ),
   async execute(interaction: ChatInputCommandInteraction<CacheType>) {
-
     const question = interaction.options.getString("mensagem");
 
     const [getMessages, addMessage] = useMessages(interaction.user.id);
@@ -56,3 +55,5 @@ A: ${answer}`);
     });
   },
 };
+
+export default b;

@@ -6,7 +6,7 @@ import {
 import { CreateCompletionResponse } from "openai";
 import { useOpenai } from "../utils/useOpenai";
 
-export const d = {
+const d = {
   data: new SlashCommandBuilder()
     .setName("d")
     .setDescription("Fale com a bat")
@@ -38,3 +38,5 @@ export const d = {
 A: ${answer}`);
   },
 };
+
+export default d;
