@@ -34,11 +34,11 @@ export default function buildCommands(
     );
 }
 
-export const getCollection = (list: Command[]) => {
+export const getCollection = (commands: Command[]) => {
   const collection = new Collection<any, Command>();
-  list.forEach((c) => collection.set(c.data.name, c));
+  commands.forEach((command) => collection.set(command.data.name, command));
   return collection;
 };
 
-export const getCommandData = (list: Command[]) =>
-  list.map((c) => c.data.toJSON());
+export const getCommandData = (commands: Command[]) =>
+  commands.map((command) => command.data.toJSON!());

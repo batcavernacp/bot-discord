@@ -21,8 +21,8 @@ app.listen(port, () => {
   console.log("Server listening on port " + port);
 });
 
-const token = process.env.DISCORD_TOKEN;
-const clientId = process.env.DISCORD_CLIENT_ID;
+const token = process.env.DISCORD_TOKEN as string;
+const clientId = process.env.DISCORD_CLIENT_ID as string;
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
