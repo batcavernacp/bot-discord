@@ -19,7 +19,7 @@ const b: CommandBuilder = (builder, { openai }) => ({
     addMessage({
       name: interaction.user.id,
       role: "user",
-      content: question,
+      content: question!,
     });
 
     await interaction.reply(`Q: ${question}`);

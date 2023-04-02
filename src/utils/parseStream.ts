@@ -1,4 +1,4 @@
-export const parseStream = async <T>(data: T, parse: (datas: T) => string) => {
+export const parseStream = async <T>(data: T, parse: (datas: T) => string | undefined) => {
   const streamCompletion = await import("@fortaine/openai/stream").then(
     (m) => m.streamCompletion
   );

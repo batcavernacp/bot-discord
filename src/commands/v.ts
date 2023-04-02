@@ -19,7 +19,7 @@ const v: CommandBuilder = (builder, { openai }) => ({
     addMessage({
       name: interaction.user.id,
       role: "user",
-      content: question,
+      content: question!,
     });
 
     await interaction.reply(`Q: ${question}
@@ -40,7 +40,7 @@ const v: CommandBuilder = (builder, { openai }) => ({
       (d: any) => d.choices[0].delta.content ?? ""
     );
 
-    await interaction.channel.send({
+    await interaction.channel?.send({
       content: `A: ${answer}`,
       tts: true,
     });
